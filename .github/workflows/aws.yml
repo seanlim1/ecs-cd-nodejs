@@ -54,9 +54,9 @@ jobs:
       id: build-image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: slim-nodejs # must change
+        ECR_REPOSITORY: slim-nodejs # must change.
         IMAGE_TAG: latest
-      working-directory: ./sample-code
+      working-directory: ./sample-code # custom addon
       run: |
         # Build a docker container and
         # push it to ECR so that it can
@@ -69,7 +69,7 @@ jobs:
       id: task-def
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
-        task-definition: ./sample-code/ecs-task-definition.json
+        task-definition: ./sample-code/ecs-task-definition.json # custom addon
         container-name: sctp-cloud-infra
         image: ${{ steps.build-image.outputs.image }}
 
@@ -77,6 +77,6 @@ jobs:
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
         task-definition: ${{ steps.task-def.outputs.task-definition }}
-        service: sctp-cloud-infra-ecs-service
+        service: slim-demo-svc # to create via console
         cluster: slim-demo # must change
         wait-for-service-stability: true
