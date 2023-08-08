@@ -77,6 +77,6 @@ jobs:
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
         task-definition: ${{ steps.task-def.outputs.task-definition }}
-        service: sctp-cloud-infra-ecs-service
+        service: slim-service  # must change
         cluster: slim-demo # must change
         wait-for-service-stability: true
