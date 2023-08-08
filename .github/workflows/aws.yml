@@ -50,10 +50,6 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
-    - name: Change Directory
-      run: |
-        cd sample-code
-
     - name: Build, tag, and push image to Amazon ECR
       id: build-image
       env:
@@ -61,6 +57,7 @@ jobs:
         ECR_REPOSITORY: slim-nodejs # must change
         IMAGE_TAG: latest
       run: |
+        cd sample-code
         # Build a docker container and
         # push it to ECR so that it can
         # be deployed to ECS.
@@ -72,7 +69,7 @@ jobs:
       id: task-def
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
-        task-definition: ecs-task-definition.json
+        task-definition: sample-code/ecs-task-definition.json
         container-name: sctp-cloud-infra
         image: ${{ steps.build-image.outputs.image }}
 
